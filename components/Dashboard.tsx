@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
-import { CURSOS_MOCK, LEADS_MOCK, PROFESSORES_MOCK } from '../constants';
+import { useData } from '../contexts/DataContext';
 import { Curso, Lead, LeadStatus, MetaGlobal, StatusCurso, ActivityLog } from '../types';
 import {
   DollarSign, Users, Calendar, TrendingUp, ArrowRight,
@@ -18,11 +18,12 @@ interface CourseDetailModalProps {
 }
 
 const CourseDetailModal: React.FC<CourseDetailModalProps> = ({ course, onClose, onNavigateToCRM }) => {
+  const { leads } = useData();
   if (!course) return null;
 
   // Filtra leads interessados neste curso (Simulação de CRM)
   // Lógica: Se o campo 'interesse' do lead contiver partes do tema do curso
-  const courseLeads = LEADS_MOCK.filter(lead =>
+  const courseLeads = leads.filter(lead =>
     course.tema.toLowerCase().includes(lead.interesse.toLowerCase()) ||
     lead.interesse.toLowerCase().includes(course.tema.toLowerCase())
   );
@@ -52,8 +53,8 @@ const CourseDetailModal: React.FC<CourseDetailModalProps> = ({ course, onClose, 
             <div>
               <div className="flex items-center gap-2 mb-2">
                 <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider border ${course.status === 'Concluído' ? 'bg-green-500/20 border-green-400/30 text-green-300' :
-                    course.status === 'Em Andamento' ? 'bg-blue-500/20 border-blue-400/30 text-blue-300' :
-                      'bg-pink-500/20 border-pink-400/30 text-pink-300'
+                  course.status === 'Em Andamento' ? 'bg-blue-500/20 border-blue-400/30 text-blue-300' :
+                    'bg-pink-500/20 border-pink-400/30 text-pink-300'
                   }`}>
                   {course.status}
                 </span>
@@ -150,9 +151,9 @@ const CourseDetailModal: React.FC<CourseDetailModalProps> = ({ course, onClose, 
                             </td>
                             <td className="px-4 py-3">
                               <span className={`px-2 py-0.5 rounded text-[10px] font-bold border ${lead.status === LeadStatus.Inscrito ? 'bg-green-50 text-green-600 border-green-100' :
-                                  lead.status === LeadStatus.PropostaEnviada ? 'bg-blue-50 text-blue-600 border-blue-100' :
-                                    lead.status === LeadStatus.Declinado ? 'bg-red-50 text-red-600 border-red-100' :
-                                      'bg-amber-50 text-amber-600 border-amber-100'
+                                lead.status === LeadStatus.PropostaEnviada ? 'bg-blue-50 text-blue-600 border-blue-100' :
+                                  lead.status === LeadStatus.Declinado ? 'bg-red-50 text-red-600 border-red-100' :
+                                    'bg-amber-50 text-amber-600 border-amber-100'
                                 }`}>
                                 {lead.status}
                               </span>
@@ -243,12 +244,13 @@ interface DashboardProps {
 }
 
 const Dashboard: React.FC<DashboardProps> = ({ onNavigateToCRM, metaGlobal, activities }) => {
+  const { cursos, professores } = useData();
   const [selectedCourse, setSelectedCourse] = useState<Curso | null>(null);
 
-  const totalFaturamento = CURSOS_MOCK.reduce((acc, curr) => acc + curr.faturamentoAtual, 0);
-  const totalInscritos = CURSOS_MOCK.reduce((acc, curr) => acc + curr.inscritos, 0);
-  const totalCursos = CURSOS_MOCK.length;
-  const activeCourses = CURSOS_MOCK.filter(c => c.status !== 'Concluído' && c.status !== 'Cancelado').length;
+  const totalFaturamento = cursos.reduce((acc, curr) => acc + curr.faturamentoAtual, 0);
+  const totalInscritos = cursos.reduce((acc, curr) => acc + curr.inscritos, 0);
+  const totalCursos = cursos.length;
+  const activeCourses = cursos.filter(c => c.status !== 'Concluído' && c.status !== 'Cancelado').length;
 
   // Usando a Meta Global Dinâmica vinda das Props
   const metaAnual = metaGlobal.metaGlobalValor;
@@ -262,7 +264,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigateToCRM, metaGlobal, acti
   ];
 
   // Sorting and Grouping Courses by Month
-  const sortedCourses = [...CURSOS_MOCK].sort((a, b) => new Date(a.dataInicio).getTime() - new Date(b.dataInicio).getTime());
+  const sortedCourses = [...cursos].sort((a, b) => new Date(a.dataInicio).getTime() - new Date(b.dataInicio).getTime());
 
   const groupedCourses = sortedCourses.reduce((groups, course) => {
     const date = new Date(course.dataInicio);
@@ -365,7 +367,7 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigateToCRM, metaGlobal, acti
               <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                 {courses.map(curso => {
                   const alert = shouldShowViabilityAlert(curso.inscritos, curso.dataInicio) && curso.status === StatusCurso.Agendado;
-                  const professorName = PROFESSORES_MOCK.find(p => p.id === curso.professorId)?.nome || 'Professor não definido';
+                  const professorName = professores.find(p => p.id === curso.professorId)?.nome || 'Professor não definido';
                   const percentFinancial = Math.min((curso.faturamentoAtual / curso.metaFaturamento) * 100, 100);
                   const percentInscritos = Math.min((curso.inscritos / 30) * 100, 100);
                   const days = getDaysUntil(curso.dataInicio);
@@ -382,9 +384,9 @@ const Dashboard: React.FC<DashboardProps> = ({ onNavigateToCRM, metaGlobal, acti
                       {/* Header */}
                       <div className="flex justify-between items-start mb-4 relative z-10">
                         <span className={`px-2 py-0.5 rounded text-[10px] font-bold border uppercase tracking-wider ${curso.status === 'Concluído' ? 'bg-green-50 text-green-600 border-green-100' :
-                            curso.status === 'Em Andamento' ? 'bg-blue-50 text-blue-600 border-blue-100' :
-                              curso.status === 'Cancelado' ? 'bg-red-50 text-red-600 border-red-100' :
-                                'bg-amber-50 text-amber-600 border-amber-100'
+                          curso.status === 'Em Andamento' ? 'bg-blue-50 text-blue-600 border-blue-100' :
+                            curso.status === 'Cancelado' ? 'bg-red-50 text-red-600 border-red-100' :
+                              'bg-amber-50 text-amber-600 border-amber-100'
                           }`}>
                           {curso.status}
                         </span>
