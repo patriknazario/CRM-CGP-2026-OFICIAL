@@ -9,6 +9,7 @@ export default defineConfig(({ mode }) => {
         port: 3000,
         host: '0.0.0.0',
         allowedHosts: [
+          '65992841-70fd-4281-9f01-10a1ec6e6bf8-00-v3ho78u4irtn.worf.replit.dev',
           '.replit.dev',
           '.repl.co',
           'localhost'
