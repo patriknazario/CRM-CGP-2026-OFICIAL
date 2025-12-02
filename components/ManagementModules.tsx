@@ -833,9 +833,9 @@ export const CoursesMgmtView: React.FC = () => {
               <div className="flex justify-between items-start mb-4">
                 <div className="flex items-start gap-3">
                   <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${curso.status === StatusCurso.Concluido ? 'bg-green-100 text-green-600' :
-                      curso.status === StatusCurso.EmAndamento ? 'bg-blue-100 text-blue-600' :
-                        curso.status === StatusCurso.Cancelado ? 'bg-red-100 text-red-600' :
-                          'bg-pink-100 text-pink-600'
+                    curso.status === StatusCurso.EmAndamento ? 'bg-blue-100 text-blue-600' :
+                      curso.status === StatusCurso.Cancelado ? 'bg-red-100 text-red-600' :
+                        'bg-pink-100 text-pink-600'
                     }`}>
                     {curso.status === StatusCurso.Concluido ? <Check className="w-6 h-6" /> :
                       curso.status === StatusCurso.Cancelado ? <X className="w-6 h-6" /> :
@@ -914,7 +914,7 @@ export const CoursesMgmtView: React.FC = () => {
 
 // --- PROFESSORS MANAGEMENT ---
 export const ProfessorsMgmtView: React.FC = () => {
-  const [professors, setProfessors] = useState<Professor[]>(PROFESSORES_MOCK);
+  const { professores: professors, addProfessor, updateProfessor, deleteProfessor } = useData();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProfessor, setEditingProfessor] = useState<Professor | null>(null);
 
@@ -928,18 +928,18 @@ export const ProfessorsMgmtView: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleSave = (prof: Professor) => {
+  const handleSave = async (prof: Professor) => {
     if (editingProfessor) {
-      setProfessors(professors.map(p => p.id === prof.id ? prof : p));
+      await updateProfessor(prof);
     } else {
-      setProfessors([...professors, prof]);
+      await addProfessor(prof);
     }
     setIsModalOpen(false);
   };
 
   // Função para deletar um professor (usando callback funcional para evitar state stale)
-  const handleDelete = (id: string) => {
-    setProfessors(prevProfessors => prevProfessors.filter(p => p.id !== id));
+  const handleDelete = async (id: string) => {
+    await deleteProfessor(id);
     setIsModalOpen(false);
   };
 
@@ -1511,8 +1511,8 @@ export const NotificationsMgmtView: React.FC<NotificationsMgmtProps> = ({ notifi
                 <div key={notif.id} className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-start hover:border-pink-200 transition-colors">
                   <div className="flex gap-4">
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${notif.tipo === 'urgent' ? 'bg-red-100 text-red-600' :
-                        notif.tipo === 'warning' ? 'bg-amber-100 text-amber-600' :
-                          'bg-blue-100 text-blue-600'
+                      notif.tipo === 'warning' ? 'bg-amber-100 text-amber-600' :
+                        'bg-blue-100 text-blue-600'
                       }`}>
                       <Bell className="w-5 h-5" />
                     </div>
@@ -1520,8 +1520,8 @@ export const NotificationsMgmtView: React.FC<NotificationsMgmtProps> = ({ notifi
                       <div className="flex items-center gap-2 mb-1">
                         <h4 className="font-bold text-slate-800">{notif.titulo}</h4>
                         <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${notif.tipo === 'urgent' ? 'bg-red-50 text-red-600' :
-                            notif.tipo === 'warning' ? 'bg-amber-50 text-amber-600' :
-                              'bg-blue-50 text-blue-600'
+                          notif.tipo === 'warning' ? 'bg-amber-50 text-amber-600' :
+                            'bg-blue-50 text-blue-600'
                           }`}>
                           {notif.tipo}
                         </span>

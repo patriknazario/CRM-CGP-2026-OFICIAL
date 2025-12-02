@@ -11,5 +11,5 @@ export const supabase = (supabaseUrl && supabaseAnonKey)
   : null;
 
 if (!supabase) {
-  console.warn('Supabase credentials not found in environment variables. Running in Mock Mode.');
+  console.warn('Supabase credentials not found. App will run in Empty Mode (no data).');
 }

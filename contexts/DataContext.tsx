@@ -31,6 +31,9 @@ interface DataContextType {
   addCurso: (curso: Curso) => Promise<void>;
   updateCurso: (curso: Curso) => Promise<void>;
   deleteCurso: (id: string) => Promise<void>;
+  addProfessor: (professor: Professor) => Promise<void>;
+  updateProfessor: (professor: Professor) => Promise<void>;
+  deleteProfessor: (id: string) => Promise<void>;
   updateMetaGlobal: (meta: MetaGlobal) => Promise<void>;
   logActivity: (type: ActivityLog['type'], message: string, details: string, author: string) => void;
   addNotification: (n: Notificacao) => void;
@@ -403,6 +406,59 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const addProfessor = async (professor: Professor) => {
+    if (supabase) {
+      const { data, error } = await supabase.from('professores').insert([{
+        nome: professor.nome,
+        especialidade: professor.especialidade,
+        email: professor.email,
+        linkedin: professor.linkedin,
+        instagram: professor.instagram
+      }]).select().single();
+
+      if (error) {
+        console.error('Error adding professor:', error);
+      } else if (data) {
+        setProfessores(prev => [...prev, data]);
+      }
+    } else {
+      setProfessores(prev => [...prev, professor]);
+    }
+  };
+
+  const updateProfessor = async (professor: Professor) => {
+    if (supabase) {
+      const { data, error } = await supabase.from('professores').update({
+        nome: professor.nome,
+        especialidade: professor.especialidade,
+        email: professor.email,
+        linkedin: professor.linkedin,
+        instagram: professor.instagram
+      }).eq('id', professor.id).select().single();
+
+      if (error) {
+        console.error('Error updating professor:', error);
+      } else if (data) {
+        setProfessores(prev => prev.map(p => p.id === professor.id ? data : p));
+      }
+    } else {
+      setProfessores(prev => prev.map(p => p.id === professor.id ? professor : p));
+    }
+  };
+
+  const deleteProfessor = async (id: string) => {
+    if (supabase) {
+      const { error } = await supabase.from('professores').delete().eq('id', id);
+      if (error) {
+        console.error('Error deleting professor:', error);
+      } else {
+        setProfessores(prev => prev.filter(p => p.id !== id));
+      }
+    } else {
+      setProfessores(prev => prev.filter(p => p.id !== id));
+    }
+  };
+
   const updateMetaGlobal = async (meta: MetaGlobal) => {
     if (supabase) {
       // Assuming single row for meta global
@@ -467,6 +523,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       addCurso,
       updateCurso,
       deleteCurso,
+      addProfessor,
+      updateProfessor,
+      deleteProfessor,
       updateMetaGlobal,
       logActivity,
       addNotification,
