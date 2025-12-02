@@ -140,15 +140,27 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // 6. Fetch Notificacoes
       const { data: notifData, error: notifError } = await supabase.from('notificacoes').select('*').order('data', { ascending: false });
       if (notifError) console.error('Error fetching notificacoes:', notifError);
-      if (notifData) {
-        setNotifications(notifData);
-      }
+      // Always set notifications, even if empty, to clear mocks
+      setNotifications(notifData || []);
 
       // 7. Fetch Activity Logs
       const { data: activityData, error: activityError } = await supabase.from('activity_logs').select('*').order('timestamp', { ascending: false });
       if (activityError) console.error('Error fetching activity_logs:', activityError);
-      if (activityData) {
-        setActivities(activityData);
+      // Always set activities, even if empty, to clear mocks
+      setActivities(activityData || []);
+
+      // 8. Fetch Taxas Comissao
+      const { data: taxasData, error: taxasError } = await supabase.from('taxas_comissao').select('*');
+      if (taxasError) console.error('Error fetching taxas_comissao:', taxasError);
+      if (taxasData) {
+        setTaxasComissao(taxasData.map((t: any) => ({
+          ...t,
+          vendedorId: t.vendedor_id,
+          vendedorNome: t.vendedor_nome,
+          cursoId: t.curso_id,
+          cursoNome: t.curso_nome,
+          mesAplicacao: t.mes_aplicacao
+        })));
       }
 
     } catch (error) {
