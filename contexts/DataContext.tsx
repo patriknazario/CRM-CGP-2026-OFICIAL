@@ -138,14 +138,16 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
 
       // 6. Fetch Notificacoes
-      const { data: notifData } = await supabase.from('notificacoes').select('*').order('data', { ascending: false });
-      if (notifData && notifData.length > 0) {
+      const { data: notifData, error: notifError } = await supabase.from('notificacoes').select('*').order('data', { ascending: false });
+      if (notifError) console.error('Error fetching notificacoes:', notifError);
+      if (notifData) {
         setNotifications(notifData);
       }
 
       // 7. Fetch Activity Logs
-      const { data: activityData } = await supabase.from('activity_logs').select('*').order('timestamp', { ascending: false });
-      if (activityData && activityData.length > 0) {
+      const { data: activityData, error: activityError } = await supabase.from('activity_logs').select('*').order('timestamp', { ascending: false });
+      if (activityError) console.error('Error fetching activity_logs:', activityError);
+      if (activityData) {
         setActivities(activityData);
       }
 
