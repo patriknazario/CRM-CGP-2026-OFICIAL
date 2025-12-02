@@ -1,13 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabaseClient';
-import {
-  CURSOS_MOCK,
-  LEADS_MOCK,
-  PROFESSORES_MOCK,
-  VENDEDORAS_MOCK,
-  META_GLOBAL_MOCK,
-  COMISSOES_MOCK
-} from '../constants';
+
 import {
   Curso,
   Lead,
@@ -48,12 +41,21 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [loading, setLoading] = useState(true);
-  const [cursos, setCursos] = useState<Curso[]>(CURSOS_MOCK);
-  const [leads, setLeads] = useState<Lead[]>(LEADS_MOCK);
-  const [professores, setProfessores] = useState<Professor[]>(PROFESSORES_MOCK);
-  const [vendedoras, setVendedoras] = useState<Vendedora[]>(VENDEDORAS_MOCK);
-  const [metaGlobal, setMetaGlobal] = useState<MetaGlobal>(META_GLOBAL_MOCK);
-  const [taxasComissao, setTaxasComissao] = useState<TaxaComissao[]>(COMISSOES_MOCK);
+  const [cursos, setCursos] = useState<Curso[]>([]);
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [professores, setProfessores] = useState<Professor[]>([]);
+  const [vendedoras, setVendedoras] = useState<Vendedora[]>([]);
+  const [metaGlobal, setMetaGlobal] = useState<MetaGlobal>({
+    periodo: 'Anual',
+    metaGlobalValor: 0,
+    bonus1: 0,
+    bonus2: 0,
+    bonus3: 0,
+    bonusValor1: 0,
+    bonusValor2: 0,
+    bonusValor3: 0
+  });
+  const [taxasComissao, setTaxasComissao] = useState<TaxaComissao[]>([]);
 
   // Local only states
   const [notifications, setNotifications] = useState<Notificacao[]>([]);
@@ -62,9 +64,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const fetchData = async () => {
     setLoading(true);
 
-    // If Supabase is not configured, we stick to initial Mocks
+    // If Supabase is not configured, we stick to empty state
     if (!supabase) {
-      console.log('Supabase not configured. Using Mock Data.');
+      console.warn('Supabase not configured. App will start with empty data.');
       setLoading(false);
       return;
     }
@@ -157,7 +159,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     } catch (error) {
       console.error('Error fetching data from Supabase:', error);
-      // Fallback is already set (Mocks)
+      // Fallback is empty state
     } finally {
       setLoading(false);
     }
