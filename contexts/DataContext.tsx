@@ -230,7 +230,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // setLeads(prev => [...prev, lead]); 
 
     if (supabase) {
-      const { error } = await supabase.from('leads').insert([{
+      const { data, error } = await supabase.from('leads').insert([{
         nome: lead.nome,
         empresa: lead.empresa,
         cargo: lead.cargo,
@@ -246,8 +246,25 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         curso_id: lead.cursoId,
         responsavel_id: lead.responsavelId,
         data_cadastro: lead.dataCadastro
-      }]);
-      if (error) console.error('Error adding lead:', error);
+      }]).select().single();
+
+      if (error) {
+        console.error('Error adding lead:', error);
+      } else if (data) {
+        // Map back to frontend model if needed, or assume matching structure for now
+        // Ideally we should map snake_case back to camelCase here like in fetchData
+        const newLead = {
+          ...data,
+          valorPotencial: data.valor_potencial,
+          valorNegociado: data.valor_negociado,
+          quantidadeInscricoes: data.quantidade_inscricoes,
+          cursoId: data.curso_id,
+          responsavelId: data.responsavel_id,
+          dataCadastro: data.data_cadastro,
+          motivoPerda: data.motivo_perda
+        };
+        setLeads(prev => [newLead, ...prev]);
+      }
     } else {
       // Fallback for Mock Mode
       setLeads(prev => [...prev, lead]);
@@ -259,7 +276,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // setLeads(prev => prev.map(l => l.id === lead.id ? lead : l));
 
     if (supabase) {
-      const { error } = await supabase.from('leads').update({
+      const { data, error } = await supabase.from('leads').update({
         nome: lead.nome,
         empresa: lead.empresa,
         cargo: lead.cargo,
@@ -275,9 +292,23 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         curso_id: lead.cursoId,
         responsavel_id: lead.responsavelId,
         // data_cadastro usually doesn't change
-      }).eq('id', lead.id);
+      }).eq('id', lead.id).select().single();
 
-      if (error) console.error('Error updating lead:', error);
+      if (error) {
+        console.error('Error updating lead:', error);
+      } else if (data) {
+        const updatedLead = {
+          ...data,
+          valorPotencial: data.valor_potencial,
+          valorNegociado: data.valor_negociado,
+          quantidadeInscricoes: data.quantidade_inscricoes,
+          cursoId: data.curso_id,
+          responsavelId: data.responsavel_id,
+          dataCadastro: data.data_cadastro,
+          motivoPerda: data.motivo_perda
+        };
+        setLeads(prev => prev.map(l => l.id === lead.id ? updatedLead : l));
+      }
     } else {
       setLeads(prev => prev.map(l => l.id === lead.id ? lead : l));
     }
@@ -285,7 +316,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const addCurso = async (curso: Curso) => {
     if (supabase) {
-      const { error } = await supabase.from('cursos').insert([{
+      const { data, error } = await supabase.from('cursos').insert([{
         tema: curso.tema,
         professor_id: curso.professorId,
         cidade: curso.cidade,
@@ -298,8 +329,23 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         faturamento_atual: curso.faturamentoAtual,
         status: curso.status,
         inscritos: curso.inscritos
-      }]);
-      if (error) console.error('Error adding curso:', error);
+      }]).select().single();
+
+      if (error) {
+        console.error('Error adding curso:', error);
+      } else if (data) {
+        const newCurso = {
+          ...data,
+          dataInicio: data.data_inicio,
+          dataFim: data.data_fim,
+          cargaHoraria: data.carga_horaria,
+          valorInscricao: data.valor_inscricao,
+          metaFaturamento: data.meta_faturamento,
+          faturamentoAtual: data.faturamento_atual,
+          professorId: data.professor_id
+        };
+        setCursos(prev => [...prev, newCurso]);
+      }
     } else {
       setCursos(prev => [...prev, curso]);
     }
@@ -307,7 +353,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const updateCurso = async (curso: Curso) => {
     if (supabase) {
-      const { error } = await supabase.from('cursos').update({
+      const { data, error } = await supabase.from('cursos').update({
         tema: curso.tema,
         professor_id: curso.professorId,
         cidade: curso.cidade,
@@ -320,8 +366,23 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
         faturamento_atual: curso.faturamentoAtual,
         status: curso.status,
         inscritos: curso.inscritos
-      }).eq('id', curso.id);
-      if (error) console.error('Error updating curso:', error);
+      }).eq('id', curso.id).select().single();
+
+      if (error) {
+        console.error('Error updating curso:', error);
+      } else if (data) {
+        const updatedCurso = {
+          ...data,
+          dataInicio: data.data_inicio,
+          dataFim: data.data_fim,
+          cargaHoraria: data.carga_horaria,
+          valorInscricao: data.valor_inscricao,
+          metaFaturamento: data.meta_faturamento,
+          faturamentoAtual: data.faturamento_atual,
+          professorId: data.professor_id
+        };
+        setCursos(prev => prev.map(c => c.id === curso.id ? updatedCurso : c));
+      }
     } else {
       setCursos(prev => prev.map(c => c.id === curso.id ? curso : c));
     }
@@ -330,7 +391,11 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const deleteCurso = async (id: string) => {
     if (supabase) {
       const { error } = await supabase.from('cursos').delete().eq('id', id);
-      if (error) console.error('Error deleting curso:', error);
+      if (error) {
+        console.error('Error deleting curso:', error);
+      } else {
+        setCursos(prev => prev.filter(c => c.id !== id));
+      }
     } else {
       setCursos(prev => prev.filter(c => c.id !== id));
     }
@@ -356,14 +421,19 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const addNotification = async (n: Notificacao) => {
     if (supabase) {
-      const { error } = await supabase.from('notificacoes').insert([{
+      const { data, error } = await supabase.from('notificacoes').insert([{
         titulo: n.titulo,
         mensagem: n.mensagem,
         tipo: n.tipo,
         data: n.data,
         lida: n.lida
-      }]);
-      if (error) console.error('Error adding notification:', error);
+      }]).select().single();
+
+      if (error) {
+        console.error('Error adding notification:', error);
+      } else if (data) {
+        setNotifications(prev => [data, ...prev]);
+      }
     } else {
       setNotifications(prev => [n, ...prev]);
     }
