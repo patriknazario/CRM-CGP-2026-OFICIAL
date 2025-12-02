@@ -56,16 +56,8 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [taxasComissao, setTaxasComissao] = useState<TaxaComissao[]>(COMISSOES_MOCK);
 
   // Local only states
-  const [notifications, setNotifications] = useState<Notificacao[]>([
-    { id: '1', titulo: 'Meta Batida!', mensagem: 'Parabéns time! Atingimos 100% da meta trimestral antecipadamente.', tipo: 'info', data: new Date().toISOString(), lida: false },
-    { id: '2', titulo: 'Atualização de Sistema', mensagem: 'O sistema passará por manutenção no domingo às 02:00.', tipo: 'warning', data: new Date().toISOString(), lida: false }
-  ]);
-
-  const [activities, setActivities] = useState<ActivityLog[]>([
-    { id: '1', type: 'success', message: 'Nova inscrição confirmada', details: 'Vendedora Elis fechou contrato com Prefeitura de Osasco.', author: 'Elis', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString() },
-    { id: '2', type: 'info', message: 'Novo lead cadastrado', details: 'Lead "Carlos Silva" adicionado ao pipeline.', author: 'Sistema', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString() },
-    { id: '3', type: 'warning', message: 'Oportunidade perdida', details: 'Lead "Marcos Pereira" declinado.', author: 'Patrícia', timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString() }
-  ]);
+  const [notifications, setNotifications] = useState<Notificacao[]>([]);
+  const [activities, setActivities] = useState<ActivityLog[]>([]);
 
   const fetchData = async () => {
     setLoading(true);
