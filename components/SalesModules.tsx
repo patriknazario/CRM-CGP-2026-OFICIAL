@@ -537,8 +537,8 @@ export const CRMView: React.FC<CRMViewProps> = ({ initialFilter, logActivity }) 
   const closedLeads = leadsInPipeline.filter(l => l.status === LeadStatus.Inscrito);
   
   // Ticket Médio
-  const totalRevenue = closedLeads.reduce((acc, curr) => acc + (curr.valorNegociado || curr.valorPotencial), 0);
-  const totalInscricoesClosed = closedLeads.reduce((acc, curr) => acc + (curr.quantidadeInscricoes || 1), 0);
+  const totalRevenue = closedLeads.reduce<number>((acc, curr) => acc + (curr.valorNegociado ?? curr.valorPotencial), 0);
+  const totalInscricoesClosed = closedLeads.reduce<number>((acc, curr) => acc + (curr.quantidadeInscricoes ?? 1), 0);
   const ticketMedioPorAluno = totalInscricoesClosed > 0 ? totalRevenue / totalInscricoesClosed : 0;
   
   // Taxa de Conversão (Inscrito / Total exceto novos se houver)
@@ -547,8 +547,9 @@ export const CRMView: React.FC<CRMViewProps> = ({ initialFilter, logActivity }) 
   
   // Desconto Médio
   const leadsWithDiscount = leadsInPipeline.filter(l => l.valorNegociado && l.valorNegociado < l.valorPotencial);
-  const totalDiscountPct = leadsWithDiscount.reduce((acc, l) => {
-     const disc = (l.valorPotencial - l.valorNegociado!) / l.valorPotencial;
+  const totalDiscountPct = leadsWithDiscount.reduce<number>((acc, l) => {
+     const neg = l.valorNegociado ?? l.valorPotencial;
+     const disc = l.valorPotencial > 0 ? (l.valorPotencial - neg) / l.valorPotencial : 0;
      return acc + disc;
   }, 0);
   const descontoMedio = leadsWithDiscount.length > 0 ? (totalDiscountPct / leadsWithDiscount.length) * 100 : 0;
@@ -610,7 +611,7 @@ export const CRMView: React.FC<CRMViewProps> = ({ initialFilter, logActivity }) 
         <div className="flex gap-4 min-w-full">
           {columns.map(col => {
             const items = filteredLeads.filter(l => l.status === col.id);
-            const totalValue = items.reduce((acc, curr) => acc + (curr.valorNegociado || curr.valorPotencial), 0);
+            const totalValue = items.reduce((acc, curr) => acc + (curr.valorNegociado ?? curr.valorPotencial), 0);
             
             return (
               <div 
@@ -641,8 +642,8 @@ export const CRMView: React.FC<CRMViewProps> = ({ initialFilter, logActivity }) 
                        const vendedora = VENDEDORAS_MOCK.find(v => v.id === lead.responsavelId);
                        const valorFinal = lead.valorNegociado || lead.valorPotencial;
                        const valorOriginal = lead.valorPotencial;
-                       const hasDiscount = lead.valorNegociado && lead.valorNegociado < lead.valorPotencial;
-                       const discountPct = hasDiscount ? Math.round(((lead.valorPotencial - lead.valorNegociado!) / lead.valorPotencial) * 100) : 0;
+                       const hasDiscount = !!(lead.valorNegociado && lead.valorNegociado < lead.valorPotencial);
+                       const discountPct = hasDiscount ? Math.round(((lead.valorPotencial - (lead.valorNegociado ?? 0)) / lead.valorPotencial) * 100) : 0;
 
                        return (
                           <div 

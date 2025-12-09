@@ -5,7 +5,6 @@ import { CURSOS_MOCK, PROFESSORES_MOCK, ESTADOS_BRASIL, VENDEDORAS_MOCK, COMISSO
 import { Curso, StatusCurso, Notificacao, Professor, TaxaComissao, Vendedora, MetaGlobal } from '../types';
 import { Edit2, Save, Plus, Calendar, MapPin, DollarSign, Target, AlertTriangle, X, Trash2, Check, Clock, Bell, Send, Info, ChevronDown, Linkedin, Instagram, User, Mail, FileText, Globe, Users, TrendingUp, Award, BarChart, Percent, Layers } from 'lucide-react';
 import { shouldShowViabilityAlert, getDaysUntil } from '../utils/calculations';
-import { useData } from '../contexts/DataContext';
 
 // --- COURSE MODAL COMPONENT ---
 interface CourseFormModalProps {
@@ -46,7 +45,7 @@ const CourseFormModal: React.FC<CourseFormModalProps> = ({ isOpen, onClose, onSa
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.tema || !formData.dataInicio) return;
-
+    
     const courseToSave = {
       ...formData,
       id: formData.id || Math.random().toString(36).substr(2, 9),
@@ -76,15 +75,15 @@ const CourseFormModal: React.FC<CourseFormModalProps> = ({ isOpen, onClose, onSa
         {/* Form Body */}
         <div className="p-6 overflow-y-auto custom-scrollbar">
           <form id="course-form" onSubmit={handleSubmit} className="space-y-6">
-
+            
             {/* Section 1: Basic Info */}
             <div className="space-y-4">
               <h4 className="text-xs font-bold text-pink-600 uppercase tracking-wider border-b border-pink-100 pb-1">Informações Principais</h4>
               <div className="grid grid-cols-1 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-slate-700 mb-1">Tema do Curso</label>
-                  <input
-                    type="text"
+                  <input 
+                    type="text" 
                     value={formData.tema}
                     onChange={(e) => handleChange('tema', e.target.value)}
                     className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none transition-all text-slate-900"
@@ -95,34 +94,34 @@ const CourseFormModal: React.FC<CourseFormModalProps> = ({ isOpen, onClose, onSa
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Professor Responsável</label>
-                  <div className="relative">
-                    <select
-                      value={formData.professorId}
-                      onChange={(e) => handleChange('professorId', e.target.value)}
-                      className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none appearance-none text-slate-900"
-                    >
-                      {PROFESSORES_MOCK.map(p => (
-                        <option key={p.id} value={p.id}>{p.nome}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
-                  </div>
+                   <label className="block text-sm font-medium text-slate-700 mb-1">Professor Responsável</label>
+                   <div className="relative">
+                      <select 
+                          value={formData.professorId}
+                          onChange={(e) => handleChange('professorId', e.target.value)}
+                          className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none appearance-none text-slate-900"
+                      >
+                          {PROFESSORES_MOCK.map(p => (
+                            <option key={p.id} value={p.id}>{p.nome}</option>
+                          ))}
+                      </select>
+                      <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
-                  <div className="relative">
-                    <select
-                      value={formData.status}
-                      onChange={(e) => handleChange('status', e.target.value)}
-                      className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none appearance-none text-slate-900"
-                    >
-                      {Object.values(StatusCurso).map(s => (
-                        <option key={s} value={s}>{s}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
-                  </div>
+                   <label className="block text-sm font-medium text-slate-700 mb-1">Status</label>
+                   <div className="relative">
+                       <select 
+                          value={formData.status}
+                          onChange={(e) => handleChange('status', e.target.value)}
+                          className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none appearance-none text-slate-900"
+                       >
+                          {Object.values(StatusCurso).map(s => (
+                            <option key={s} value={s}>{s}</option>
+                          ))}
+                       </select>
+                       <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+                   </div>
                 </div>
               </div>
             </div>
@@ -131,59 +130,59 @@ const CourseFormModal: React.FC<CourseFormModalProps> = ({ isOpen, onClose, onSa
             <div className="space-y-4">
               <h4 className="text-xs font-bold text-indigo-600 uppercase tracking-wider border-b border-indigo-100 pb-1">Logística</h4>
               <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Cidade</label>
-                  <input
-                    type="text"
-                    value={formData.cidade}
-                    onChange={(e) => handleChange('cidade', e.target.value)}
-                    className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Estado</label>
-                  <div className="relative">
-                    <select
-                      value={formData.estado}
-                      onChange={(e) => handleChange('estado', e.target.value)}
-                      className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none appearance-none text-slate-900"
-                    >
-                      {ESTADOS_BRASIL.map(uf => (
-                        <option key={uf} value={uf}>{uf}</option>
-                      ))}
-                    </select>
-                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
-                  </div>
-                </div>
+                 <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Cidade</label>
+                    <input 
+                      type="text" 
+                      value={formData.cidade}
+                      onChange={(e) => handleChange('cidade', e.target.value)}
+                      className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                    />
+                 </div>
+                 <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Estado</label>
+                    <div className="relative">
+                        <select 
+                          value={formData.estado}
+                          onChange={(e) => handleChange('estado', e.target.value)}
+                          className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none appearance-none text-slate-900"
+                        >
+                          {ESTADOS_BRASIL.map(uf => (
+                            <option key={uf} value={uf}>{uf}</option>
+                          ))}
+                        </select>
+                        <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+                    </div>
+                 </div>
               </div>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Data Início</label>
-                  <input
-                    type="date"
-                    value={formData.dataInicio}
-                    onChange={(e) => handleChange('dataInicio', e.target.value)}
-                    className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Data Fim</label>
-                  <input
-                    type="date"
-                    value={formData.dataFim}
-                    onChange={(e) => handleChange('dataFim', e.target.value)}
-                    className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Carga Horária (h)</label>
-                  <input
-                    type="number"
-                    value={formData.cargaHoraria}
-                    onChange={(e) => handleChange('cargaHoraria', Number(e.target.value))}
-                    className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                  />
-                </div>
+                 <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Data Início</label>
+                    <input 
+                      type="date" 
+                      value={formData.dataInicio}
+                      onChange={(e) => handleChange('dataInicio', e.target.value)}
+                      className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                    />
+                 </div>
+                 <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Data Fim</label>
+                    <input 
+                      type="date" 
+                      value={formData.dataFim}
+                      onChange={(e) => handleChange('dataFim', e.target.value)}
+                      className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                    />
+                 </div>
+                 <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Carga Horária (h)</label>
+                    <input 
+                      type="number" 
+                      value={formData.cargaHoraria}
+                      onChange={(e) => handleChange('cargaHoraria', Number(e.target.value))}
+                      className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                    />
+                 </div>
               </div>
             </div>
 
@@ -191,63 +190,63 @@ const CourseFormModal: React.FC<CourseFormModalProps> = ({ isOpen, onClose, onSa
             <div className="space-y-4">
               <h4 className="text-xs font-bold text-green-600 uppercase tracking-wider border-b border-green-100 pb-1">Financeiro & Metas</h4>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Valor Inscrição</label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
-                    <input
-                      type="number"
-                      value={formData.valorInscricao}
-                      onChange={(e) => handleChange('valorInscricao', Number(e.target.value))}
-                      className="w-full pl-8 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                 <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Valor Inscrição</label>
+                    <div className="relative">
+                       <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
+                       <input 
+                         type="number" 
+                         value={formData.valorInscricao}
+                         onChange={(e) => handleChange('valorInscricao', Number(e.target.value))}
+                         className="w-full pl-8 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                       />
+                    </div>
+                 </div>
+                 <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Meta Faturamento</label>
+                    <div className="relative">
+                       <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
+                       <input 
+                         type="number" 
+                         value={formData.metaFaturamento}
+                         onChange={(e) => handleChange('metaFaturamento', Number(e.target.value))}
+                         className="w-full pl-8 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                       />
+                    </div>
+                 </div>
+                 <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Faturado (Atual)</label>
+                    <div className="relative">
+                       <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
+                       <input 
+                         type="number" 
+                         value={formData.faturamentoAtual}
+                         onChange={(e) => handleChange('faturamentoAtual', Number(e.target.value))}
+                         className="w-full pl-8 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                       />
+                    </div>
+                 </div>
+                 <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-1">Inscritos</label>
+                    <input 
+                       type="number" 
+                       value={formData.inscritos}
+                       onChange={(e) => handleChange('inscritos', Number(e.target.value))}
+                       className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
                     />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Meta Faturamento</label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
-                    <input
-                      type="number"
-                      value={formData.metaFaturamento}
-                      onChange={(e) => handleChange('metaFaturamento', Number(e.target.value))}
-                      className="w-full pl-8 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Faturado (Atual)</label>
-                  <div className="relative">
-                    <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
-                    <input
-                      type="number"
-                      value={formData.faturamentoAtual}
-                      onChange={(e) => handleChange('faturamentoAtual', Number(e.target.value))}
-                      className="w-full pl-8 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                    />
-                  </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-1">Inscritos</label>
-                  <input
-                    type="number"
-                    value={formData.inscritos}
-                    onChange={(e) => handleChange('inscritos', Number(e.target.value))}
-                    className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                  />
-                </div>
+                 </div>
               </div>
             </div>
 
             {/* Observations */}
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Observações</label>
-              <textarea
-                value={formData.observacoes || ''}
-                onChange={(e) => handleChange('observacoes', e.target.value)}
-                className="w-full p-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none h-20 resize-none text-slate-900"
-                placeholder="Detalhes adicionais sobre o curso..."
-              />
+               <label className="block text-sm font-medium text-slate-700 mb-1">Observações</label>
+               <textarea 
+                  value={formData.observacoes || ''}
+                  onChange={(e) => handleChange('observacoes', e.target.value)}
+                  className="w-full p-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none h-20 resize-none text-slate-900"
+                  placeholder="Detalhes adicionais sobre o curso..."
+               />
             </div>
 
           </form>
@@ -256,36 +255,36 @@ const CourseFormModal: React.FC<CourseFormModalProps> = ({ isOpen, onClose, onSa
         {/* Footer */}
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center shrink-0">
           {initialData ? (
-            <button
-              type="button"
-              onClick={() => {
-                if (window.confirm('Tem certeza que deseja excluir este curso?')) {
-                  if (initialData.id) onDelete(initialData.id);
-                }
-              }}
-              className="text-red-500 hover:text-red-700 text-sm font-medium flex items-center px-3 py-2 rounded hover:bg-red-50 transition-colors"
-            >
-              <Trash2 className="w-4 h-4 mr-1" /> Excluir
-            </button>
+             <button 
+               type="button" 
+               onClick={() => {
+                 if (window.confirm('Tem certeza que deseja excluir este curso?')) {
+                   if (initialData.id) onDelete(initialData.id);
+                 }
+               }}
+               className="text-red-500 hover:text-red-700 text-sm font-medium flex items-center px-3 py-2 rounded hover:bg-red-50 transition-colors"
+             >
+               <Trash2 className="w-4 h-4 mr-1" /> Excluir
+             </button>
           ) : (
             <div></div>
           )}
-
+          
           <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium transition-colors"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              form="course-form"
-              className="px-6 py-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-lg font-bold shadow-md shadow-pink-500/30 hover:shadow-lg hover:scale-105 transition-all flex items-center"
-            >
-              <Save className="w-4 h-4 mr-2" /> Salvar Curso
-            </button>
+             <button 
+               type="button" 
+               onClick={onClose}
+               className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium transition-colors"
+             >
+               Cancelar
+             </button>
+             <button 
+               type="submit" 
+               form="course-form"
+               className="px-6 py-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-lg font-bold shadow-md shadow-pink-500/30 hover:shadow-lg hover:scale-105 transition-all flex items-center"
+             >
+               <Save className="w-4 h-4 mr-2" /> Salvar Curso
+             </button>
           </div>
         </div>
       </div>
@@ -350,8 +349,8 @@ const ProfessorFormModal: React.FC<ProfessorFormModalProps> = ({ isOpen, onClose
         {/* Header */}
         <div className="px-6 py-4 bg-gradient-to-r from-slate-900 via-indigo-900 to-slate-900 flex justify-between items-center shrink-0">
           <h3 className="text-white text-lg font-bold flex items-center">
-            {initialData ? <Edit2 className="w-4 h-4 mr-2 text-pink-400" /> : <Plus className="w-4 h-4 mr-2 text-pink-400" />}
-            {initialData ? 'Editar Professor' : 'Novo Professor'}
+             {initialData ? <Edit2 className="w-4 h-4 mr-2 text-pink-400" /> : <Plus className="w-4 h-4 mr-2 text-pink-400" />}
+             {initialData ? 'Editar Professor' : 'Novo Professor'}
           </h3>
           <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
             <X className="w-5 h-5" />
@@ -362,83 +361,83 @@ const ProfessorFormModal: React.FC<ProfessorFormModalProps> = ({ isOpen, onClose
         <div className="p-6 overflow-y-auto custom-scrollbar">
           <form id="professor-form" onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Nome Completo</label>
-              <div className="relative">
-                <User className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-                <input
-                  type="text"
-                  value={formData.nome}
-                  onChange={e => handleChange('nome', e.target.value)}
-                  required
-                  className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                  placeholder="Ex: Dr. Cláudio Santos"
-                />
-              </div>
+               <label className="block text-sm font-medium text-slate-700 mb-1">Nome Completo</label>
+               <div className="relative">
+                  <User className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+                  <input 
+                    type="text" 
+                    value={formData.nome}
+                    onChange={e => handleChange('nome', e.target.value)}
+                    required
+                    className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                    placeholder="Ex: Dr. Cláudio Santos"
+                  />
+               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Especialidade</label>
-              <div className="relative">
-                <FileText className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-                <input
-                  type="text"
-                  value={formData.especialidade}
-                  onChange={e => handleChange('especialidade', e.target.value)}
-                  required
-                  className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                  placeholder="Ex: Direito Administrativo"
-                />
-              </div>
+               <label className="block text-sm font-medium text-slate-700 mb-1">Especialidade</label>
+               <div className="relative">
+                  <FileText className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+                  <input 
+                    type="text" 
+                    value={formData.especialidade}
+                    onChange={e => handleChange('especialidade', e.target.value)}
+                    required
+                    className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                    placeholder="Ex: Direito Administrativo"
+                  />
+               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={e => handleChange('email', e.target.value)}
-                  required
-                  className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                  placeholder="email@cgp.com.br"
-                />
-              </div>
+               <label className="block text-sm font-medium text-slate-700 mb-1">Email</label>
+               <div className="relative">
+                  <Mail className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+                  <input 
+                    type="email" 
+                    value={formData.email}
+                    onChange={e => handleChange('email', e.target.value)}
+                    required
+                    className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                    placeholder="email@cgp.com.br"
+                  />
+               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">LinkedIn (URL)</label>
-                <div className="relative">
-                  <Linkedin className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-                  <input
-                    type="text"
-                    value={formData.linkedin || ''}
-                    onChange={e => handleChange('linkedin', e.target.value)}
-                    className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                    placeholder="linkedin.com/in/..."
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-1">Instagram (@)</label>
-                <div className="relative">
-                  <Instagram className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
-                  <input
-                    type="text"
-                    value={formData.instagram || ''}
-                    onChange={e => handleChange('instagram', e.target.value)}
-                    className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
-                    placeholder="@perfil"
-                  />
-                </div>
-              </div>
+               <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">LinkedIn (URL)</label>
+                  <div className="relative">
+                     <Linkedin className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+                     <input 
+                       type="text" 
+                       value={formData.linkedin || ''}
+                       onChange={e => handleChange('linkedin', e.target.value)}
+                       className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                       placeholder="linkedin.com/in/..."
+                     />
+                  </div>
+               </div>
+               <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-1">Instagram (@)</label>
+                  <div className="relative">
+                     <Instagram className="absolute left-3 top-2.5 w-4 h-4 text-slate-400" />
+                     <input 
+                       type="text" 
+                       value={formData.instagram || ''}
+                       onChange={e => handleChange('instagram', e.target.value)}
+                       className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none text-slate-900"
+                       placeholder="@perfil"
+                     />
+                  </div>
+               </div>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Mini Bio</label>
-              <textarea
-                value={formData.bio || ''}
-                onChange={e => handleChange('bio', e.target.value)}
-                className="w-full p-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none h-24 resize-none text-slate-900"
-                placeholder="Breve descrição do professor..."
-              />
+               <label className="block text-sm font-medium text-slate-700 mb-1">Mini Bio</label>
+               <textarea 
+                  value={formData.bio || ''}
+                  onChange={e => handleChange('bio', e.target.value)}
+                  className="w-full p-3 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500/20 focus:border-pink-500 outline-none h-24 resize-none text-slate-900"
+                  placeholder="Breve descrição do professor..."
+               />
             </div>
           </form>
         </div>
@@ -446,32 +445,32 @@ const ProfessorFormModal: React.FC<ProfessorFormModalProps> = ({ isOpen, onClose
         {/* Footer */}
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center shrink-0">
           {initialData ? (
-            <button
-              type="button"
-              onClick={handleDeleteClick}
-              className="text-red-500 hover:text-red-700 text-sm font-medium flex items-center px-3 py-2 rounded hover:bg-red-50 transition-colors"
-            >
-              <Trash2 className="w-4 h-4 mr-1" /> Excluir
-            </button>
+             <button 
+               type="button" 
+               onClick={handleDeleteClick}
+               className="text-red-500 hover:text-red-700 text-sm font-medium flex items-center px-3 py-2 rounded hover:bg-red-50 transition-colors"
+             >
+               <Trash2 className="w-4 h-4 mr-1" /> Excluir
+             </button>
           ) : (
-            <div></div>
+             <div></div>
           )}
-
+          
           <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={onClose}
-              className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium transition-colors"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              form="professor-form"
-              className="px-6 py-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-lg font-bold shadow-md shadow-pink-500/30 hover:scale-105 transition-all flex items-center"
-            >
-              <Save className="w-4 h-4 mr-2" /> Salvar
-            </button>
+             <button 
+               type="button" 
+               onClick={onClose}
+               className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium transition-colors"
+             >
+               Cancelar
+             </button>
+             <button 
+               type="submit" 
+               form="professor-form"
+               className="px-6 py-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white rounded-lg font-bold shadow-md shadow-pink-500/30 hover:scale-105 transition-all flex items-center"
+             >
+               <Save className="w-4 h-4 mr-2" /> Salvar
+             </button>
           </div>
         </div>
       </div>
@@ -510,11 +509,11 @@ const SellerGoalModal: React.FC<SellerGoalModalProps> = ({ isOpen, onClose, onSa
         {/* Header */}
         <div className="px-6 py-4 bg-gradient-to-r from-indigo-900 to-slate-900 flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <img src={seller.avatar} alt={seller.nome} className="w-10 h-10 rounded-full border-2 border-white/20" />
-            <div>
-              <h3 className="text-white text-lg font-bold">Metas: {seller.nome}</h3>
-              <p className="text-indigo-200 text-xs">Definição de objetivos individuais</p>
-            </div>
+             <img src={seller.avatar} alt={seller.nome} className="w-10 h-10 rounded-full border-2 border-white/20" />
+             <div>
+                <h3 className="text-white text-lg font-bold">Metas: {seller.nome}</h3>
+                <p className="text-indigo-200 text-xs">Definição de objetivos individuais</p>
+             </div>
           </div>
           <button onClick={onClose} className="text-slate-400 hover:text-white transition-colors">
             <X className="w-5 h-5" />
@@ -523,65 +522,65 @@ const SellerGoalModal: React.FC<SellerGoalModalProps> = ({ isOpen, onClose, onSa
 
         {/* Form */}
         <div className="p-6">
-          <form id="seller-goal-form" onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Meta Mensal (R$)</label>
-              <div className="relative">
-                <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
-                <input
-                  type="number"
-                  value={formData.metaMensal || 0}
-                  onChange={(e) => setFormData(prev => ({ ...prev, metaMensal: Number(e.target.value) }))}
-                  className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
-                />
+           <form id="seller-goal-form" onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                 <label className="block text-sm font-bold text-slate-700 mb-2">Meta Mensal (R$)</label>
+                 <div className="relative">
+                    <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
+                    <input 
+                       type="number" 
+                       value={formData.metaMensal || 0}
+                       onChange={(e) => setFormData(prev => ({ ...prev, metaMensal: Number(e.target.value) }))}
+                       className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
+                    />
+                 </div>
               </div>
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Meta Trimestral (R$)</label>
-              <div className="relative">
-                <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
-                <input
-                  type="number"
-                  value={formData.metaTrimestral || 0}
-                  onChange={(e) => setFormData(prev => ({ ...prev, metaTrimestral: Number(e.target.value) }))}
-                  className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
-                />
+              <div>
+                 <label className="block text-sm font-bold text-slate-700 mb-2">Meta Trimestral (R$)</label>
+                 <div className="relative">
+                    <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
+                    <input 
+                       type="number" 
+                       value={formData.metaTrimestral || 0}
+                       onChange={(e) => setFormData(prev => ({ ...prev, metaTrimestral: Number(e.target.value) }))}
+                       className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
+                    />
+                 </div>
               </div>
-            </div>
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Meta Anual (R$)</label>
-              <div className="relative">
-                <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
-                <input
-                  type="number"
-                  value={formData.metaAnual || 0}
-                  onChange={(e) => setFormData(prev => ({ ...prev, metaAnual: Number(e.target.value) }))}
-                  className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
-                />
+              <div>
+                 <label className="block text-sm font-bold text-slate-700 mb-2">Meta Anual (R$)</label>
+                 <div className="relative">
+                    <span className="absolute left-3 top-2.5 text-slate-400 text-sm">R$</span>
+                    <input 
+                       type="number" 
+                       value={formData.metaAnual || 0}
+                       onChange={(e) => setFormData(prev => ({ ...prev, metaAnual: Number(e.target.value) }))}
+                       className="w-full pl-9 p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
+                    />
+                 </div>
               </div>
-            </div>
-          </form>
+           </form>
         </div>
 
         {/* Footer */}
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium transition-colors"
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
-            form="seller-goal-form"
-            className="px-6 py-2 bg-pink-600 text-white rounded-lg font-bold shadow-md hover:bg-pink-700 transition-all flex items-center"
-          >
-            <Save className="w-4 h-4 mr-2" /> Salvar Metas
-          </button>
+           <button 
+             type="button" 
+             onClick={onClose}
+             className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium transition-colors"
+           >
+             Cancelar
+           </button>
+           <button 
+             type="submit" 
+             onClick={(e) => {
+               e.stopPropagation();
+             }}
+             form="seller-goal-form"
+             className="px-6 py-2 bg-pink-600 text-white rounded-lg font-bold shadow-md hover:bg-pink-700 transition-all flex items-center"
+           >
+             <Save className="w-4 h-4 mr-2" /> Salvar Metas
+           </button>
         </div>
       </div>
     </div>,
@@ -603,7 +602,7 @@ const CommissionRateModal: React.FC<CommissionRateModalProps> = ({ isOpen, onClo
   const [targetId, setTargetId] = useState('todos'); // Course ID or Month Name
 
   const months = [
-    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 
     'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
   ];
 
@@ -611,9 +610,9 @@ const CommissionRateModal: React.FC<CommissionRateModalProps> = ({ isOpen, onClo
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     const isSpecific = vendedorId !== 'todos' || targetId !== 'todos';
-
+    
     const newTaxa: TaxaComissao = {
       id: Date.now().toString(),
       taxa,
@@ -638,7 +637,7 @@ const CommissionRateModal: React.FC<CommissionRateModalProps> = ({ isOpen, onClo
       <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md overflow-hidden animate-scale-up">
         <div className="px-6 py-4 bg-gradient-to-r from-pink-600 to-purple-600 flex justify-between items-center">
           <h3 className="text-white text-lg font-bold flex items-center">
-            <Plus className="w-5 h-5 mr-2" /> Nova Taxa de Comissão
+             <Plus className="w-5 h-5 mr-2" /> Nova Taxa de Comissão
           </h3>
           <button onClick={onClose} className="text-white/70 hover:text-white transition-colors">
             <X className="w-5 h-5" />
@@ -646,111 +645,111 @@ const CommissionRateModal: React.FC<CommissionRateModalProps> = ({ isOpen, onClo
         </div>
 
         <div className="p-6">
-          <form id="commission-form" onSubmit={handleSubmit} className="space-y-5">
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Vendedora</label>
-              <div className="relative">
-                <select
-                  value={vendedorId}
-                  onChange={e => setVendedorId(e.target.value)}
-                  className="w-full p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 focus:ring-2 focus:ring-pink-500 outline-none appearance-none"
-                >
-                  <option value="todos">Todas as Vendedoras</option>
-                  {VENDEDORAS_MOCK.map(v => (
-                    <option key={v.id} value={v.id}>{v.nome}</option>
-                  ))}
-                </select>
-                <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Taxa de Comissão (%)</label>
-              <div className="relative">
-                <input
-                  type="number"
-                  value={taxa}
-                  onChange={e => setTaxa(Number(e.target.value))}
-                  min="0"
-                  step="0.1"
-                  className="w-full pl-3 pr-10 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
-                />
-                <Percent className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
-              </div>
-            </div>
-
-            <div>
-              <label className="block text-sm font-bold text-slate-700 mb-2">Tipo de Aplicação</label>
-              <div className="flex bg-slate-100 p-1 rounded-lg">
-                <button
-                  type="button"
-                  onClick={() => { setApplyType('course'); setTargetId('todos'); }}
-                  className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${applyType === 'course' ? 'bg-white text-pink-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-                >
-                  Por Curso
-                </button>
-                <button
-                  type="button"
-                  onClick={() => { setApplyType('month'); setTargetId(months[0]); }}
-                  className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${applyType === 'month' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
-                >
-                  Por Mês (Sazonal)
-                </button>
-              </div>
-            </div>
-
-            {applyType === 'course' ? (
+           <form id="commission-form" onSubmit={handleSubmit} className="space-y-5">
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Curso Específico</label>
-                <div className="relative">
-                  <select
-                    value={targetId}
-                    onChange={e => setTargetId(e.target.value)}
-                    className="w-full p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 focus:ring-2 focus:ring-pink-500 outline-none appearance-none"
-                  >
-                    <option value="todos">Todos os Cursos (Padrão)</option>
-                    {CURSOS_MOCK.map(c => (
-                      <option key={c.id} value={c.id}>{c.tema}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
-                </div>
+                 <label className="block text-sm font-bold text-slate-700 mb-2">Vendedora</label>
+                 <div className="relative">
+                    <select 
+                       value={vendedorId}
+                       onChange={e => setVendedorId(e.target.value)}
+                       className="w-full p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 focus:ring-2 focus:ring-pink-500 outline-none appearance-none"
+                    >
+                       <option value="todos">Todas as Vendedoras</option>
+                       {VENDEDORAS_MOCK.map(v => (
+                          <option key={v.id} value={v.id}>{v.nome}</option>
+                       ))}
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+                 </div>
               </div>
-            ) : (
+
               <div>
-                <label className="block text-sm font-bold text-slate-700 mb-2">Mês de Aplicação</label>
-                <div className="relative">
-                  <select
-                    value={targetId}
-                    onChange={e => setTargetId(e.target.value)}
-                    className="w-full p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 focus:ring-2 focus:ring-pink-500 outline-none appearance-none"
-                  >
-                    {months.map(m => (
-                      <option key={m} value={m}>{m}</option>
-                    ))}
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
-                </div>
+                 <label className="block text-sm font-bold text-slate-700 mb-2">Taxa de Comissão (%)</label>
+                 <div className="relative">
+                    <input 
+                       type="number" 
+                       value={taxa}
+                       onChange={e => setTaxa(Number(e.target.value))}
+                       min="0"
+                       step="0.1"
+                       className="w-full pl-3 pr-10 py-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
+                    />
+                    <Percent className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
+                 </div>
               </div>
-            )}
-          </form>
+
+              <div>
+                 <label className="block text-sm font-bold text-slate-700 mb-2">Tipo de Aplicação</label>
+                 <div className="flex bg-slate-100 p-1 rounded-lg">
+                    <button
+                       type="button"
+                       onClick={() => { setApplyType('course'); setTargetId('todos'); }}
+                       className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${applyType === 'course' ? 'bg-white text-pink-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                    >
+                       Por Curso
+                    </button>
+                    <button
+                       type="button"
+                       onClick={() => { setApplyType('month'); setTargetId(months[0]); }}
+                       className={`flex-1 py-1.5 text-xs font-bold rounded-md transition-all ${applyType === 'month' ? 'bg-white text-indigo-600 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                    >
+                       Por Mês (Sazonal)
+                    </button>
+                 </div>
+              </div>
+
+              {applyType === 'course' ? (
+                 <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Curso Específico</label>
+                    <div className="relative">
+                       <select 
+                          value={targetId}
+                          onChange={e => setTargetId(e.target.value)}
+                          className="w-full p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 focus:ring-2 focus:ring-pink-500 outline-none appearance-none"
+                       >
+                          <option value="todos">Todos os Cursos (Padrão)</option>
+                          {CURSOS_MOCK.map(c => (
+                             <option key={c.id} value={c.id}>{c.tema}</option>
+                          ))}
+                       </select>
+                       <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+                    </div>
+                 </div>
+              ) : (
+                 <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-2">Mês de Aplicação</label>
+                    <div className="relative">
+                       <select 
+                          value={targetId}
+                          onChange={e => setTargetId(e.target.value)}
+                          className="w-full p-2.5 bg-white border border-slate-200 rounded-lg text-slate-900 focus:ring-2 focus:ring-pink-500 outline-none appearance-none"
+                       >
+                          {months.map(m => (
+                             <option key={m} value={m}>{m}</option>
+                          ))}
+                       </select>
+                       <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+                    </div>
+                 </div>
+              )}
+           </form>
         </div>
 
         <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-3">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium transition-colors"
-          >
-            Cancelar
-          </button>
-          <button
-            type="submit"
-            form="commission-form"
-            className="px-6 py-2 bg-pink-600 text-white rounded-lg font-bold shadow-md hover:bg-pink-700 transition-all flex items-center"
-          >
-            <Save className="w-4 h-4 mr-2" /> Salvar Taxa
-          </button>
+           <button 
+             type="button" 
+             onClick={onClose}
+             className="px-4 py-2 text-slate-600 hover:text-slate-800 font-medium transition-colors"
+           >
+             Cancelar
+           </button>
+           <button 
+             type="submit" 
+             form="commission-form"
+             className="px-6 py-2 bg-pink-600 text-white rounded-lg font-bold shadow-md hover:bg-pink-700 transition-all flex items-center"
+           >
+             <Save className="w-4 h-4 mr-2" /> Salvar Taxa
+           </button>
         </div>
       </div>
     </div>,
@@ -760,7 +759,7 @@ const CommissionRateModal: React.FC<CommissionRateModalProps> = ({ isOpen, onClo
 
 // --- COURSES MANAGEMENT VIEW ---
 export const CoursesMgmtView: React.FC = () => {
-  const { cursos: courses, addCurso, updateCurso, deleteCurso } = useData();
+  const [courses, setCourses] = useState<Curso[]>(CURSOS_MOCK);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Curso | null>(null);
 
@@ -774,19 +773,19 @@ export const CoursesMgmtView: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleSave = async (course: Curso) => {
+  const handleSave = (course: Curso) => {
     if (editingCourse) {
       // Update
-      await updateCurso(course);
+      setCourses(courses.map(c => c.id === course.id ? course : c));
     } else {
       // Create
-      await addCurso(course);
+      setCourses([...courses, course]);
     }
     setIsModalOpen(false);
   };
 
-  const handleDelete = async (id: string) => {
-    await deleteCurso(id);
+  const handleDelete = (id: string) => {
+    setCourses(courses.filter(c => c.id !== id));
     setIsModalOpen(false);
   };
 
@@ -797,7 +796,7 @@ export const CoursesMgmtView: React.FC = () => {
           <h2 className="text-2xl font-bold text-slate-800">Gerenciar Cursos</h2>
           <p className="text-slate-500 text-sm">Total de {courses.length} cursos cadastrados</p>
         </div>
-        <button
+        <button 
           onClick={handleNew}
           className="px-4 py-2 bg-pink-600 text-white rounded-lg font-medium shadow-md shadow-pink-500/20 hover:bg-pink-700 transition-all flex items-center transform hover:-translate-y-0.5"
         >
@@ -812,10 +811,11 @@ export const CoursesMgmtView: React.FC = () => {
           const professor = PROFESSORES_MOCK.find(p => p.id === curso.professorId)?.nome || 'Professor não atribuído';
 
           return (
-            <div
-              key={curso.id}
-              className={`bg-white rounded-xl shadow-sm p-6 transition-all hover:shadow-lg hover:border-pink-200 group relative ${showAlert ? 'border-2 border-amber-500' : 'border border-slate-200'
-                }`}
+            <div 
+              key={curso.id} 
+              className={`bg-white rounded-xl shadow-sm p-6 transition-all hover:shadow-lg hover:border-pink-200 group relative ${
+                showAlert ? 'border-2 border-amber-500' : 'border border-slate-200'
+              }`}
             >
               {showAlert && (
                 <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-start space-x-2 animate-pulse">
@@ -823,7 +823,7 @@ export const CoursesMgmtView: React.FC = () => {
                   <div className="text-sm">
                     <p className="font-bold text-amber-800">Atenção: Viabilidade em risco!</p>
                     <p className="text-amber-700">
-                      Apenas <span className="font-bold">{curso.inscritos}</span> inscrições confirmadas.
+                      Apenas <span className="font-bold">{curso.inscritos}</span> inscrições confirmadas. 
                       Início em {daysUntil} {daysUntil === 1 ? 'dia' : 'dias'}.
                     </p>
                   </div>
@@ -831,77 +831,79 @@ export const CoursesMgmtView: React.FC = () => {
               )}
 
               <div className="flex justify-between items-start mb-4">
-                <div className="flex items-start gap-3">
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${curso.status === StatusCurso.Concluido ? 'bg-green-100 text-green-600' :
-                    curso.status === StatusCurso.EmAndamento ? 'bg-blue-100 text-blue-600' :
-                      curso.status === StatusCurso.Cancelado ? 'bg-red-100 text-red-600' :
-                        'bg-pink-100 text-pink-600'
-                    }`}>
-                    {curso.status === StatusCurso.Concluido ? <Check className="w-6 h-6" /> :
-                      curso.status === StatusCurso.Cancelado ? <X className="w-6 h-6" /> :
-                        curso.status === StatusCurso.EmAndamento ? <Clock className="w-6 h-6" /> :
-                          <Calendar className="w-6 h-6" />}
-                  </div>
-                  <div>
-                    <span className={`text-xs font-bold uppercase tracking-wider mb-1 block px-2 py-0.5 rounded w-fit ${curso.status === StatusCurso.Concluido ? 'bg-green-50 text-green-600' : 'bg-slate-100 text-slate-500'
+                 <div className="flex items-start gap-3">
+                   <div className={`w-12 h-12 rounded-lg flex items-center justify-center shrink-0 ${
+                     curso.status === StatusCurso.Concluido ? 'bg-green-100 text-green-600' :
+                     curso.status === StatusCurso.EmAndamento ? 'bg-blue-100 text-blue-600' :
+                     curso.status === StatusCurso.Cancelado ? 'bg-red-100 text-red-600' :
+                     'bg-pink-100 text-pink-600'
+                   }`}>
+                     {curso.status === StatusCurso.Concluido ? <Check className="w-6 h-6"/> :
+                      curso.status === StatusCurso.Cancelado ? <X className="w-6 h-6"/> :
+                      curso.status === StatusCurso.EmAndamento ? <Clock className="w-6 h-6"/> :
+                      <Calendar className="w-6 h-6"/>}
+                   </div>
+                   <div>
+                      <span className={`text-xs font-bold uppercase tracking-wider mb-1 block px-2 py-0.5 rounded w-fit ${
+                        curso.status === StatusCurso.Concluido ? 'bg-green-50 text-green-600' : 'bg-slate-100 text-slate-500'
                       }`}>
-                      {curso.status}
-                    </span>
-                    <h3 className="text-lg font-bold text-slate-800">{curso.tema}</h3>
-                    <p className="text-sm text-slate-500">Prof. {professor}</p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => handleEdit(curso)}
-                  className="p-2 text-slate-400 hover:text-white hover:bg-pink-500 rounded-lg transition-all shadow-sm"
-                  title="Editar Curso"
-                >
-                  <Edit2 className="w-4 h-4" />
-                </button>
+                        {curso.status}
+                      </span>
+                      <h3 className="text-lg font-bold text-slate-800">{curso.tema}</h3>
+                      <p className="text-sm text-slate-500">Prof. {professor}</p>
+                   </div>
+                 </div>
+                 <button 
+                   onClick={() => handleEdit(curso)}
+                   className="p-2 text-slate-400 hover:text-white hover:bg-pink-500 rounded-lg transition-all shadow-sm"
+                   title="Editar Curso"
+                 >
+                    <Edit2 className="w-4 h-4" />
+                 </button>
               </div>
-
+              
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mt-6 pt-4 border-t border-slate-50">
-                <div className="flex items-center text-slate-600">
-                  <MapPin className="w-4 h-4 mr-2 text-pink-400" />
-                  {curso.cidade}/{curso.estado}
-                </div>
-                <div className="flex items-center text-slate-600">
-                  <Calendar className="w-4 h-4 mr-2 text-pink-400" />
-                  {new Date(curso.dataInicio).toLocaleDateString('pt-BR')}
-                </div>
-                <div className="flex items-center text-slate-600">
-                  <DollarSign className="w-4 h-4 mr-2 text-pink-400" />
-                  R$ {curso.valorInscricao.toLocaleString()}
-                </div>
-                <div className="flex items-center text-slate-600">
-                  <Target className="w-4 h-4 mr-2 text-pink-400" />
-                  Meta: R$ {curso.metaFaturamento.toLocaleString()}
-                </div>
+                 <div className="flex items-center text-slate-600">
+                    <MapPin className="w-4 h-4 mr-2 text-pink-400" />
+                    {curso.cidade}/{curso.estado}
+                 </div>
+                 <div className="flex items-center text-slate-600">
+                    <Calendar className="w-4 h-4 mr-2 text-pink-400" />
+                    {new Date(curso.dataInicio).toLocaleDateString('pt-BR')}
+                 </div>
+                 <div className="flex items-center text-slate-600">
+                    <DollarSign className="w-4 h-4 mr-2 text-pink-400" />
+                    R$ {curso.valorInscricao.toLocaleString()}
+                 </div>
+                 <div className="flex items-center text-slate-600">
+                    <Target className="w-4 h-4 mr-2 text-pink-400" />
+                    Meta: R$ {curso.metaFaturamento.toLocaleString()}
+                 </div>
               </div>
-
+              
               <div className="mt-4 flex items-center justify-between">
-                <div className="w-full mr-4">
-                  <div className="flex justify-between text-xs mb-1">
-                    <span className="text-slate-500">Faturamento Realizado</span>
-                    <span className="font-bold text-slate-700">{Math.round((curso.faturamentoAtual / curso.metaFaturamento) * 100)}%</span>
-                  </div>
-                  <div className="w-full bg-slate-100 rounded-full h-1.5">
-                    <div
-                      className="bg-gradient-to-r from-pink-500 to-purple-500 h-1.5 rounded-full"
-                      style={{ width: `${Math.min((curso.faturamentoAtual / curso.metaFaturamento) * 100, 100)}%` }}
-                    ></div>
-                  </div>
-                </div>
-                <div className="text-xs font-medium px-3 py-1 bg-slate-100 rounded-full text-slate-600 whitespace-nowrap">
-                  {curso.inscritos} Inscritos
-                </div>
+                 <div className="w-full mr-4">
+                    <div className="flex justify-between text-xs mb-1">
+                      <span className="text-slate-500">Faturamento Realizado</span>
+                      <span className="font-bold text-slate-700">{Math.round((curso.faturamentoAtual / curso.metaFaturamento) * 100)}%</span>
+                    </div>
+                    <div className="w-full bg-slate-100 rounded-full h-1.5">
+                       <div 
+                         className="bg-gradient-to-r from-pink-500 to-purple-500 h-1.5 rounded-full" 
+                         style={{ width: `${Math.min((curso.faturamentoAtual / curso.metaFaturamento) * 100, 100)}%` }}
+                       ></div>
+                    </div>
+                 </div>
+                 <div className="text-xs font-medium px-3 py-1 bg-slate-100 rounded-full text-slate-600 whitespace-nowrap">
+                   {curso.inscritos} Inscritos
+                 </div>
               </div>
             </div>
           );
         })}
       </div>
 
-      <CourseFormModal
+      <CourseFormModal 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleSave}
@@ -914,7 +916,7 @@ export const CoursesMgmtView: React.FC = () => {
 
 // --- PROFESSORS MANAGEMENT ---
 export const ProfessorsMgmtView: React.FC = () => {
-  const { professores: professors, addProfessor, updateProfessor, deleteProfessor } = useData();
+  const [professors, setProfessors] = useState<Professor[]>(PROFESSORES_MOCK);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingProfessor, setEditingProfessor] = useState<Professor | null>(null);
 
@@ -928,18 +930,18 @@ export const ProfessorsMgmtView: React.FC = () => {
     setIsModalOpen(true);
   };
 
-  const handleSave = async (prof: Professor) => {
+  const handleSave = (prof: Professor) => {
     if (editingProfessor) {
-      await updateProfessor(prof);
+      setProfessors(professors.map(p => p.id === prof.id ? prof : p));
     } else {
-      await addProfessor(prof);
+      setProfessors([...professors, prof]);
     }
     setIsModalOpen(false);
   };
 
   // Função para deletar um professor (usando callback funcional para evitar state stale)
-  const handleDelete = async (id: string) => {
-    await deleteProfessor(id);
+  const handleDelete = (id: string) => {
+    setProfessors(prevProfessors => prevProfessors.filter(p => p.id !== id));
     setIsModalOpen(false);
   };
 
@@ -947,7 +949,7 @@ export const ProfessorsMgmtView: React.FC = () => {
     <div className="space-y-6 animate-fade-in">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold text-slate-800">Corpo Docente</h2>
-        <button
+        <button 
           onClick={handleNew}
           className="px-4 py-2 bg-indigo-600 text-white rounded-lg font-medium shadow-md hover:bg-indigo-700 flex items-center transition-transform hover:-translate-y-0.5"
         >
@@ -956,35 +958,35 @@ export const ProfessorsMgmtView: React.FC = () => {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {professors.map((prof) => (
-          <div key={prof.id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col items-center text-center hover:border-pink-300 transition-colors group relative">
-            <div className="w-24 h-24 bg-slate-100 rounded-full mb-4 overflow-hidden border-4 border-white shadow-lg group-hover:scale-105 transition-transform">
-              <img src={`https://api.dicebear.com/7.x/initials/svg?seed=${prof.nome}`} alt={prof.nome} className="w-full h-full" />
+         {professors.map((prof) => (
+            <div key={prof.id} className="bg-white rounded-xl shadow-sm border border-slate-200 p-6 flex flex-col items-center text-center hover:border-pink-300 transition-colors group relative">
+               <div className="w-24 h-24 bg-slate-100 rounded-full mb-4 overflow-hidden border-4 border-white shadow-lg group-hover:scale-105 transition-transform">
+                  <img src={`https://api.dicebear.com/7.x/initials/svg?seed=${prof.nome}`} alt={prof.nome} className="w-full h-full" />
+               </div>
+               <h3 className="font-bold text-slate-800 text-lg">{prof.nome}</h3>
+               <p className="text-pink-600 text-sm font-medium mb-4">{prof.especialidade}</p>
+               
+               <div className="w-full space-y-2 text-sm text-slate-500 bg-slate-50 p-3 rounded-lg mb-4">
+                  <p className="flex items-center justify-center gap-2"><Mail className="w-3 h-3" /> {prof.email}</p>
+                  {(prof.linkedin || prof.instagram) && (
+                     <div className="flex justify-center gap-3 mt-2">
+                        {prof.linkedin && <Linkedin className="w-4 h-4 text-blue-600 cursor-pointer" />}
+                        {prof.instagram && <Instagram className="w-4 h-4 text-pink-600 cursor-pointer" />}
+                     </div>
+                  )}
+               </div>
+               
+               <button 
+                 onClick={() => handleEdit(prof)}
+                 className="w-full py-2 border border-slate-200 rounded-lg text-slate-600 font-medium hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center justify-center"
+               >
+                  <Edit2 className="w-3 h-3 mr-2" /> Editar Perfil
+               </button>
             </div>
-            <h3 className="font-bold text-slate-800 text-lg">{prof.nome}</h3>
-            <p className="text-pink-600 text-sm font-medium mb-4">{prof.especialidade}</p>
-
-            <div className="w-full space-y-2 text-sm text-slate-500 bg-slate-50 p-3 rounded-lg mb-4">
-              <p className="flex items-center justify-center gap-2"><Mail className="w-3 h-3" /> {prof.email}</p>
-              {(prof.linkedin || prof.instagram) && (
-                <div className="flex justify-center gap-3 mt-2">
-                  {prof.linkedin && <Linkedin className="w-4 h-4 text-blue-600 cursor-pointer" />}
-                  {prof.instagram && <Instagram className="w-4 h-4 text-pink-600 cursor-pointer" />}
-                </div>
-              )}
-            </div>
-
-            <button
-              onClick={() => handleEdit(prof)}
-              className="w-full py-2 border border-slate-200 rounded-lg text-slate-600 font-medium hover:bg-slate-50 hover:text-slate-900 transition-colors flex items-center justify-center"
-            >
-              <Edit2 className="w-3 h-3 mr-2" /> Editar Perfil
-            </button>
-          </div>
-        ))}
+         ))}
       </div>
 
-      <ProfessorFormModal
+      <ProfessorFormModal 
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         onSave={handleSave}
@@ -1005,7 +1007,7 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
   const [activeSubTab, setActiveSubTab] = useState<'global' | 'vendedores' | 'comissoes'>('global');
   const [vendedores, setVendedores] = useState<Vendedora[]>(VENDEDORAS_MOCK);
   const [taxas, setTaxas] = useState<TaxaComissao[]>(COMISSOES_MOCK);
-
+  
   // State for Seller Editing
   const [isSellerModalOpen, setIsSellerModalOpen] = useState(false);
   const [editingSeller, setEditingSeller] = useState<Vendedora | null>(null);
@@ -1039,22 +1041,22 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
 
   return (
     <div className="space-y-6 animate-fade-in">
-
+      
       {/* Sub-Navigation Tabs */}
       <div className="flex bg-slate-100 p-1 rounded-xl w-fit">
-        <button
+        <button 
           onClick={() => setActiveSubTab('global')}
           className={`px-6 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeSubTab === 'global' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
         >
           <Target className="w-4 h-4" /> Meta Global
         </button>
-        <button
+        <button 
           onClick={() => setActiveSubTab('vendedores')}
           className={`px-6 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeSubTab === 'vendedores' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
         >
           <Users className="w-4 h-4" /> Metas por Vendedor
         </button>
-        <button
+        <button 
           onClick={() => setActiveSubTab('comissoes')}
           className={`px-6 py-2 rounded-lg text-sm font-medium transition-all flex items-center gap-2 ${activeSubTab === 'comissoes' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
         >
@@ -1063,7 +1065,7 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
       </div>
 
       {/* --- CONTENT AREA --- */}
-
+      
       {/* 1. Global Goal View */}
       {activeSubTab === 'global' && (
         <div className="space-y-8 animate-fade-in">
@@ -1075,7 +1077,7 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
                 <h2 className="text-xl font-bold text-slate-800">Meta Global 2026</h2>
               </div>
               <p className="text-slate-500 mb-6">Objetivo anual da empresa</p>
-
+              
               <div className="text-5xl font-black text-slate-800 tracking-tight mb-8">
                 R$ {metaGlobal.metaGlobalValor.toLocaleString('pt-BR')}
               </div>
@@ -1087,21 +1089,21 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
                   <span>Meta: R$ {metaGlobal.metaGlobalValor.toLocaleString('pt-BR')}</span>
                 </div>
                 <div className="w-full h-4 bg-slate-100 rounded-full overflow-hidden">
-                  <div className="h-full bg-slate-200 w-0"></div>
+                  <div className="h-full bg-slate-200 w-0"></div> 
                 </div>
                 <p className="mt-2 text-sm text-slate-400">Realizado: R$ 0 (0%)</p>
               </div>
 
               {/* Monthly/Quarterly Breakdown */}
               <div className="grid grid-cols-2 gap-4 border-t border-slate-100 pt-6">
-                <div>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Meta Mensal</p>
-                  <p className="text-lg font-bold text-slate-700">R$ {(metaGlobal.metaGlobalValor / 12).toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
-                </div>
-                <div>
-                  <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Meta Trimestral</p>
-                  <p className="text-lg font-bold text-slate-700">R$ {(metaGlobal.metaGlobalValor / 4).toLocaleString(undefined, { maximumFractionDigits: 0 })}</p>
-                </div>
+                 <div>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Meta Mensal</p>
+                    <p className="text-lg font-bold text-slate-700">R$ {(metaGlobal.metaGlobalValor / 12).toLocaleString(undefined, {maximumFractionDigits: 0})}</p>
+                 </div>
+                 <div>
+                    <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Meta Trimestral</p>
+                    <p className="text-lg font-bold text-slate-700">R$ {(metaGlobal.metaGlobalValor / 4).toLocaleString(undefined, {maximumFractionDigits: 0})}</p>
+                 </div>
               </div>
             </div>
 
@@ -1113,19 +1115,19 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
               <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-2">Meta Anual (R$)</label>
-                  <input
-                    type="number"
+                  <input 
+                    type="number" 
                     value={metaGlobal.metaGlobalValor}
-                    onChange={(e) => onUpdateMeta({ ...metaGlobal, metaGlobalValor: Number(e.target.value) })}
+                    onChange={(e) => onUpdateMeta({...metaGlobal, metaGlobalValor: Number(e.target.value)})}
                     className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none text-slate-900 font-mono text-lg"
                   />
                 </div>
-
+                
                 <div>
                   <label className="block text-sm font-bold text-slate-700 mb-2">Descrição</label>
-                  <textarea
+                  <textarea 
                     value={metaGlobal.descricao || ''}
-                    onChange={(e) => onUpdateMeta({ ...metaGlobal, descricao: e.target.value })}
+                    onChange={(e) => onUpdateMeta({...metaGlobal, descricao: e.target.value})}
                     className="w-full p-3 bg-white border border-slate-200 rounded-xl focus:ring-2 focus:ring-pink-500 outline-none text-slate-900 h-32 resize-none"
                     placeholder="Descreva o significado ou recompensas ao atingir a meta..."
                   />
@@ -1140,117 +1142,117 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
 
           {/* Bonus Rules Section - Restored */}
           <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-8 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
-            <div className="flex items-center gap-3 mb-6 relative z-10">
-              <Award className="w-6 h-6 text-yellow-500" />
-              <div>
-                <h2 className="text-xl font-bold text-slate-800">Regras de Bônus</h2>
-                <p className="text-slate-500 text-sm">Escala progressiva de premiação (Meta Global)</p>
-              </div>
-            </div>
+             <div className="absolute top-0 right-0 w-64 h-64 bg-yellow-500/5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+             <div className="flex items-center gap-3 mb-6 relative z-10">
+                <Award className="w-6 h-6 text-yellow-500" />
+                <div>
+                   <h2 className="text-xl font-bold text-slate-800">Regras de Bônus</h2>
+                   <p className="text-slate-500 text-sm">Escala progressiva de premiação (Meta Global)</p>
+                </div>
+             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
-              {/* Level 1 */}
-              <div className="p-5 bg-slate-50 rounded-xl border border-slate-100 hover:border-yellow-200 transition-colors">
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Nível 1</span>
-                  <span className="w-2 h-2 rounded-full bg-slate-300"></span>
+             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative z-10">
+                {/* Level 1 */}
+                <div className="p-5 bg-slate-50 rounded-xl border border-slate-100 hover:border-yellow-200 transition-colors">
+                   <div className="flex justify-between items-center mb-4">
+                      <span className="text-xs font-bold text-slate-400 uppercase tracking-wider">Nível 1</span>
+                      <span className="w-2 h-2 rounded-full bg-slate-300"></span>
+                   </div>
+                   <div className="space-y-3">
+                      <div>
+                         <label className="block text-xs font-bold text-slate-600 mb-1">% Atingimento</label>
+                         <div className="relative">
+                            <input 
+                               type="number" 
+                               value={metaGlobal.bonus1}
+                               onChange={(e) => onUpdateMeta({...metaGlobal, bonus1: Number(e.target.value)})}
+                               className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
+                            />
+                            <span className="absolute right-3 top-2 text-slate-400 text-xs font-bold">%</span>
+                         </div>
+                      </div>
+                      <div>
+                         <label className="block text-xs font-bold text-slate-600 mb-1">Valor Bônus (R$)</label>
+                         <input 
+                            type="number" 
+                            value={metaGlobal.bonusValor1}
+                            onChange={(e) => onUpdateMeta({...metaGlobal, bonusValor1: Number(e.target.value)})}
+                            className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
+                         />
+                      </div>
+                   </div>
                 </div>
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-600 mb-1">% Atingimento</label>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        value={metaGlobal.bonus1}
-                        onChange={(e) => onUpdateMeta({ ...metaGlobal, bonus1: Number(e.target.value) })}
-                        className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
-                      />
-                      <span className="absolute right-3 top-2 text-slate-400 text-xs font-bold">%</span>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-600 mb-1">Valor Bônus (R$)</label>
-                    <input
-                      type="number"
-                      value={metaGlobal.bonusValor1}
-                      onChange={(e) => onUpdateMeta({ ...metaGlobal, bonusValor1: Number(e.target.value) })}
-                      className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
 
-              {/* Level 2 */}
-              <div className="p-5 bg-slate-50 rounded-xl border border-slate-100 hover:border-yellow-300 transition-colors relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1 h-full bg-yellow-400"></div>
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-xs font-bold text-yellow-600 uppercase tracking-wider">Nível 2</span>
-                  <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
+                {/* Level 2 */}
+                <div className="p-5 bg-slate-50 rounded-xl border border-slate-100 hover:border-yellow-300 transition-colors relative overflow-hidden">
+                   <div className="absolute top-0 left-0 w-1 h-full bg-yellow-400"></div>
+                   <div className="flex justify-between items-center mb-4">
+                      <span className="text-xs font-bold text-yellow-600 uppercase tracking-wider">Nível 2</span>
+                      <span className="w-2 h-2 rounded-full bg-yellow-400"></span>
+                   </div>
+                   <div className="space-y-3">
+                      <div>
+                         <label className="block text-xs font-bold text-slate-600 mb-1">% Atingimento</label>
+                         <div className="relative">
+                            <input 
+                               type="number" 
+                               value={metaGlobal.bonus2}
+                               onChange={(e) => onUpdateMeta({...metaGlobal, bonus2: Number(e.target.value)})}
+                               className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
+                            />
+                            <span className="absolute right-3 top-2 text-slate-400 text-xs font-bold">%</span>
+                         </div>
+                      </div>
+                      <div>
+                         <label className="block text-xs font-bold text-slate-600 mb-1">Valor Bônus (R$)</label>
+                         <input 
+                            type="number" 
+                            value={metaGlobal.bonusValor2}
+                            onChange={(e) => onUpdateMeta({...metaGlobal, bonusValor2: Number(e.target.value)})}
+                            className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
+                         />
+                      </div>
+                   </div>
                 </div>
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-600 mb-1">% Atingimento</label>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        value={metaGlobal.bonus2}
-                        onChange={(e) => onUpdateMeta({ ...metaGlobal, bonus2: Number(e.target.value) })}
-                        className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
-                      />
-                      <span className="absolute right-3 top-2 text-slate-400 text-xs font-bold">%</span>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-600 mb-1">Valor Bônus (R$)</label>
-                    <input
-                      type="number"
-                      value={metaGlobal.bonusValor2}
-                      onChange={(e) => onUpdateMeta({ ...metaGlobal, bonusValor2: Number(e.target.value) })}
-                      className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
 
-              {/* Level 3 */}
-              <div className="p-5 bg-slate-50 rounded-xl border border-slate-100 hover:border-pink-300 transition-colors relative overflow-hidden">
-                <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-pink-500 to-purple-600"></div>
-                <div className="flex justify-between items-center mb-4">
-                  <span className="text-xs font-bold text-pink-600 uppercase tracking-wider">Nível 3 (Máximo)</span>
-                  <span className="w-2 h-2 rounded-full bg-pink-500"></span>
+                {/* Level 3 */}
+                <div className="p-5 bg-slate-50 rounded-xl border border-slate-100 hover:border-pink-300 transition-colors relative overflow-hidden">
+                   <div className="absolute top-0 left-0 w-1 h-full bg-gradient-to-b from-pink-500 to-purple-600"></div>
+                   <div className="flex justify-between items-center mb-4">
+                      <span className="text-xs font-bold text-pink-600 uppercase tracking-wider">Nível 3 (Máximo)</span>
+                      <span className="w-2 h-2 rounded-full bg-pink-500"></span>
+                   </div>
+                   <div className="space-y-3">
+                      <div>
+                         <label className="block text-xs font-bold text-slate-600 mb-1">% Atingimento</label>
+                         <div className="relative">
+                            <input 
+                               type="number" 
+                               value={metaGlobal.bonus3}
+                               onChange={(e) => onUpdateMeta({...metaGlobal, bonus3: Number(e.target.value)})}
+                               className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
+                            />
+                            <span className="absolute right-3 top-2 text-slate-400 text-xs font-bold">%</span>
+                         </div>
+                      </div>
+                      <div>
+                         <label className="block text-xs font-bold text-slate-600 mb-1">Valor Bônus (R$)</label>
+                         <input 
+                            type="number" 
+                            value={metaGlobal.bonusValor3}
+                            onChange={(e) => onUpdateMeta({...metaGlobal, bonusValor3: Number(e.target.value)})}
+                            className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
+                         />
+                      </div>
+                   </div>
                 </div>
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-bold text-slate-600 mb-1">% Atingimento</label>
-                    <div className="relative">
-                      <input
-                        type="number"
-                        value={metaGlobal.bonus3}
-                        onChange={(e) => onUpdateMeta({ ...metaGlobal, bonus3: Number(e.target.value) })}
-                        className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
-                      />
-                      <span className="absolute right-3 top-2 text-slate-400 text-xs font-bold">%</span>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-bold text-slate-600 mb-1">Valor Bônus (R$)</label>
-                    <input
-                      type="number"
-                      value={metaGlobal.bonusValor3}
-                      onChange={(e) => onUpdateMeta({ ...metaGlobal, bonusValor3: Number(e.target.value) })}
-                      className="w-full p-2 bg-white border border-slate-200 rounded-lg text-slate-900 font-bold focus:ring-2 focus:ring-pink-500 outline-none"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-8 flex justify-end">
-              <button className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all flex items-center">
-                <Save className="w-4 h-4 mr-2" /> Atualizar Regras de Bônus
-              </button>
-            </div>
+             </div>
+             
+             <div className="mt-8 flex justify-end">
+                <button className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-amber-600 text-white font-bold rounded-xl shadow-md hover:shadow-lg hover:scale-105 transition-all flex items-center">
+                   <Save className="w-4 h-4 mr-2" /> Atualizar Regras de Bônus
+                </button>
+             </div>
           </div>
         </div>
       )}
@@ -1263,9 +1265,9 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
             <div>
               <h2 className="text-xl font-bold text-slate-800">Metas por Vendedor - 2026</h2>
               <div className="flex items-center gap-2 mt-1">
-                <span className="text-slate-500 text-sm">Total das metas individuais:</span>
-                <span className="font-bold text-slate-800">R$ {totalMetasIndividuais.toLocaleString('pt-BR')}</span>
-                <span className="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 rounded text-xs font-bold">{vendedores.length} vendedoras cadastradas</span>
+                 <span className="text-slate-500 text-sm">Total das metas individuais:</span>
+                 <span className="font-bold text-slate-800">R$ {totalMetasIndividuais.toLocaleString('pt-BR')}</span>
+                 <span className="ml-2 px-2 py-0.5 bg-slate-200 text-slate-600 rounded text-xs font-bold">{vendedores.length} vendedoras cadastradas</span>
               </div>
             </div>
           </div>
@@ -1297,7 +1299,7 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
                         </span>
                       </td>
                       <td className="px-6 py-4 text-center">
-                        <button
+                        <button 
                           onClick={(e) => {
                             e.stopPropagation();
                             handleEditSeller(v);
@@ -1325,7 +1327,7 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
               <h2 className="text-xl font-bold text-slate-800">Taxas de Comissão</h2>
               <p className="text-slate-500 text-sm">Configure as taxas de comissão padrão e específicas</p>
             </div>
-            <button
+            <button 
               type="button"
               onClick={(e) => {
                 e.preventDefault();
@@ -1334,7 +1336,7 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
               }}
               className="px-4 py-2 bg-pink-600 text-white rounded-lg font-bold hover:bg-pink-700 transition-colors flex items-center shadow-md shadow-pink-500/20"
             >
-              <Plus className="w-4 h-4 mr-2" /> Adicionar Taxa
+               <Plus className="w-4 h-4 mr-2" /> Adicionar Taxa
             </button>
           </div>
 
@@ -1355,11 +1357,11 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
                     <td className="px-6 py-4 font-bold text-slate-800">{taxa.taxa}%</td>
                     <td className="px-6 py-4 text-slate-600">{taxa.vendedorNome}</td>
                     <td className="px-6 py-4 text-slate-600">
-                      {taxa.mesAplicacao ? (
-                        <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-indigo-500" /> {taxa.mesAplicacao}</span>
-                      ) : (
-                        <span>{taxa.cursoNome}</span>
-                      )}
+                        {taxa.mesAplicacao ? (
+                           <span className="flex items-center gap-1"><Calendar className="w-3 h-3 text-indigo-500"/> {taxa.mesAplicacao}</span>
+                        ) : (
+                           <span>{taxa.cursoNome}</span>
+                        )}
                     </td>
                     <td className="px-6 py-4">
                       <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold text-white ${taxa.tipo === 'Padrão' ? 'bg-slate-700' : 'bg-indigo-500'}`}>
@@ -1367,7 +1369,7 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
                       </span>
                     </td>
                     <td className="px-6 py-4 text-right">
-                      <button
+                      <button 
                         onClick={() => handleDeleteRate(taxa.id)}
                         className="p-2 text-slate-400 hover:text-red-500 transition-colors"
                       >
@@ -1383,7 +1385,7 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
       )}
 
       {/* Seller Goal Modal */}
-      <SellerGoalModal
+      <SellerGoalModal 
         isOpen={isSellerModalOpen}
         onClose={() => setIsSellerModalOpen(false)}
         onSave={handleUpdateSellerGoal}
@@ -1391,7 +1393,7 @@ export const GoalsMgmtView: React.FC<GoalsMgmtViewProps> = ({ metaGlobal, onUpda
       />
 
       {/* Commission Rate Modal */}
-      <CommissionRateModal
+      <CommissionRateModal 
         isOpen={isCommissionModalOpen}
         onClose={() => setIsCommissionModalOpen(false)}
         onSave={handleAddRate}
@@ -1450,8 +1452,8 @@ export const NotificationsMgmtView: React.FC<NotificationsMgmtProps> = ({ notifi
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Título</label>
-                <input
-                  type="text"
+                <input 
+                  type="text" 
                   value={title}
                   onChange={e => setTitle(e.target.value)}
                   className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500 outline-none text-slate-900"
@@ -1462,21 +1464,21 @@ export const NotificationsMgmtView: React.FC<NotificationsMgmtProps> = ({ notifi
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Prioridade</label>
                 <div className="relative">
-                  <select
-                    value={type}
-                    onChange={e => setType(e.target.value as any)}
-                    className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500 outline-none appearance-none text-slate-900"
-                  >
-                    <option value="info">Informativo (Azul)</option>
-                    <option value="warning">Atenção (Amarelo)</option>
-                    <option value="urgent">Urgente (Vermelho)</option>
-                  </select>
-                  <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
+                    <select 
+                      value={type}
+                      onChange={e => setType(e.target.value as any)}
+                      className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500 outline-none appearance-none text-slate-900"
+                    >
+                      <option value="info">Informativo (Azul)</option>
+                      <option value="warning">Atenção (Amarelo)</option>
+                      <option value="urgent">Urgente (Vermelho)</option>
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4 pointer-events-none" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-1">Mensagem</label>
-                <textarea
+                <textarea 
                   value={message}
                   onChange={e => setMessage(e.target.value)}
                   className="w-full p-2.5 bg-white border border-slate-200 rounded-lg focus:ring-2 focus:ring-pink-500 outline-none h-32 resize-none text-slate-900"
@@ -1484,8 +1486,8 @@ export const NotificationsMgmtView: React.FC<NotificationsMgmtProps> = ({ notifi
                   required
                 />
               </div>
-              <button
-                type="submit"
+              <button 
+                type="submit" 
                 className="w-full py-2 bg-gradient-to-r from-pink-600 to-purple-600 text-white font-bold rounded-lg shadow-md hover:shadow-lg transition-all"
               >
                 Enviar Aviso
@@ -1499,47 +1501,49 @@ export const NotificationsMgmtView: React.FC<NotificationsMgmtProps> = ({ notifi
           <h3 className="font-bold text-lg text-slate-800 flex items-center">
             <Bell className="w-5 h-5 mr-2 text-indigo-500" /> Avisos Ativos ({notifications.length})
           </h3>
-
+          
           {notifications.length === 0 ? (
-            <div className="bg-slate-50 rounded-xl p-8 text-center border border-slate-200 border-dashed">
-              <Info className="w-10 h-10 text-slate-300 mx-auto mb-2" />
-              <p className="text-slate-500">Nenhum aviso ativo no momento.</p>
-            </div>
+             <div className="bg-slate-50 rounded-xl p-8 text-center border border-slate-200 border-dashed">
+                <Info className="w-10 h-10 text-slate-300 mx-auto mb-2" />
+                <p className="text-slate-500">Nenhum aviso ativo no momento.</p>
+             </div>
           ) : (
-            <div className="space-y-3">
-              {notifications.map((notif) => (
-                <div key={notif.id} className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-start hover:border-pink-200 transition-colors">
-                  <div className="flex gap-4">
-                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${notif.tipo === 'urgent' ? 'bg-red-100 text-red-600' :
-                      notif.tipo === 'warning' ? 'bg-amber-100 text-amber-600' :
-                        'bg-blue-100 text-blue-600'
-                      }`}>
-                      <Bell className="w-5 h-5" />
+             <div className="space-y-3">
+               {notifications.map((notif) => (
+                 <div key={notif.id} className="bg-white p-4 rounded-xl shadow-sm border border-slate-100 flex justify-between items-start hover:border-pink-200 transition-colors">
+                    <div className="flex gap-4">
+                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center shrink-0 ${
+                          notif.tipo === 'urgent' ? 'bg-red-100 text-red-600' :
+                          notif.tipo === 'warning' ? 'bg-amber-100 text-amber-600' :
+                          'bg-blue-100 text-blue-600'
+                       }`}>
+                          <Bell className="w-5 h-5" />
+                       </div>
+                       <div>
+                          <div className="flex items-center gap-2 mb-1">
+                             <h4 className="font-bold text-slate-800">{notif.titulo}</h4>
+                             <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${
+                                notif.tipo === 'urgent' ? 'bg-red-50 text-red-600' :
+                                notif.tipo === 'warning' ? 'bg-amber-50 text-amber-600' :
+                                'bg-blue-50 text-blue-600'
+                             }`}>
+                                {notif.tipo}
+                             </span>
+                          </div>
+                          <p className="text-sm text-slate-600">{notif.mensagem}</p>
+                          <p className="text-xs text-slate-400 mt-2">Enviado em: {new Date(notif.data).toLocaleDateString()}</p>
+                       </div>
                     </div>
-                    <div>
-                      <div className="flex items-center gap-2 mb-1">
-                        <h4 className="font-bold text-slate-800">{notif.titulo}</h4>
-                        <span className={`text-[10px] font-bold uppercase px-2 py-0.5 rounded ${notif.tipo === 'urgent' ? 'bg-red-50 text-red-600' :
-                          notif.tipo === 'warning' ? 'bg-amber-50 text-amber-600' :
-                            'bg-blue-50 text-blue-600'
-                          }`}>
-                          {notif.tipo}
-                        </span>
-                      </div>
-                      <p className="text-sm text-slate-600">{notif.mensagem}</p>
-                      <p className="text-xs text-slate-400 mt-2">Enviado em: {new Date(notif.data).toLocaleDateString()}</p>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => onDelete(notif.id)}
-                    className="text-slate-300 hover:text-red-500 transition-colors p-2"
-                    title="Excluir aviso"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
-              ))}
-            </div>
+                    <button 
+                      onClick={() => onDelete(notif.id)}
+                      className="text-slate-300 hover:text-red-500 transition-colors p-2"
+                      title="Excluir aviso"
+                    >
+                       <Trash2 className="w-4 h-4" />
+                    </button>
+                 </div>
+               ))}
+             </div>
           )}
         </div>
       </div>

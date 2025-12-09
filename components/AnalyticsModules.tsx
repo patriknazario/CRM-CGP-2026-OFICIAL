@@ -343,7 +343,7 @@ export const MapView: React.FC = () => {
   // Calculate Region Stats
   const regionStats = mapData.reduce((acc, curr) => {
      if (!acc[curr.region]) acc[curr.region] = 0;
-     acc[curr.region] += curr.value;
+     acc[curr.region] = (acc[curr.region] || 0) + curr.value;
      return acc;
   }, {} as Record<string, number>);
   
